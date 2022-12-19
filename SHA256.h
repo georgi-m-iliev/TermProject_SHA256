@@ -141,44 +141,6 @@ char *rightRotate(const char bits[], const int start, const int times) {
     return newBits;
 }
 
-void print(const char bits[], const int count, const int spacing, const int newline, const bool indexing) {
-    for(int i = 0, counter = 0; i < count; i++) {
-        if(indexing && i % (newline * spacing) == 0) {
-            std::cout << "w" << counter << " " << (counter < 10 ? " " : "");
-            counter++;
-        }
-        std::cout << bits[i];
-        if(newline != 0 && (i + 1) % (newline * spacing) == 0) {
-            std::cout << std::endl;
-        }
-        else {
-            if(spacing > 0 && (i + 1) % spacing == 0) {
-                std:: cout << " ";
-            }
-        }
-    }
-    std::cout << std::endl;
-}
-
-void print(const char bits[], const int start, const int end) {
-    for(int i = start; i < end; i++) {
-        std::cout << bits[i];
-    }
-    std::cout << std::endl;
-}
-
-void printHashVar(const char arr[]) {
-    for(int i = 0; i < MSA_WORD_SIZE; i += 4) {
-        int number = ((arr[i] - '0') * pow2(3)) + ((arr[i + 1] - '0') * pow2(2)) + ((arr[i + 2] - '0') * pow2(1)) + (arr[i + 3] - '0');
-        if(number < 10) {
-            std::cout << (char)(number + '0');
-        }
-        else {
-            std::cout << (char)(number - 10 + 'a');
-        }
-    }
-}
-
 char *intToBinaryChar(unsigned int value) {
     char *newBits = new char[MSA_WORD_SIZE];
     for(int i = MSA_WORD_SIZE - 1; i >= 0; i--) {
@@ -243,11 +205,34 @@ void fillMessageBlock(const char text[], char messageBlock[], int &length) {
     }
 }
 
-void fillMessageScheduleArray(const char messageBlock[], const int messageBlockLength, char messageSchedule[]) {
+void hashVarsToChar(char hash[], char **h) {
+    for(int i = 0, ind = 0; i < MSA_WORD_SIZE / 4; i++) {
+        for(int j = 0; j < MSA_WORD_SIZE; j += 4) {
+            int number = ((h[i][j] - '0') * pow2(3)) + ((h[i][j + 1] - '0') * pow2(2)) + ((h[i][j + 2] - '0') * pow2(1)) + (h[i][j + 3] - '0');
+            if(number < 10) {
+                hash[ind++] = (char)(number + '0');
+            }
+            else {
+                hash[ind++] = (char)(number - 10 + 'a');
+            }
+        }
+    }
+
+    delete[] h;
+
+}
+
+char *fillMessageScheduleArray2(const char text[]) {
+    int messageBlockLength;
+    char *messageBlock = new char[MAX_MESSAGE_LENGTH];
+
+    fillMessageBlock(text, messageBlock, messageBlockLength);
+    char messageSchedule[MESSAGE_SCHEDULE_ARRAY_SIZE];
+
     char *h0 = intToBinaryChar(INITIAL_HASH_VALUES[0]), *h1 = intToBinaryChar(INITIAL_HASH_VALUES[1]),
-            *h2 = intToBinaryChar(INITIAL_HASH_VALUES[2]), *h3 = intToBinaryChar(INITIAL_HASH_VALUES[3]),
-            *h4 = intToBinaryChar(INITIAL_HASH_VALUES[4]), *h5 = intToBinaryChar(INITIAL_HASH_VALUES[5]),
-            *h6 = intToBinaryChar(INITIAL_HASH_VALUES[6]), *h7 = intToBinaryChar(INITIAL_HASH_VALUES[7]);
+        *h2 = intToBinaryChar(INITIAL_HASH_VALUES[2]), *h3 = intToBinaryChar(INITIAL_HASH_VALUES[3]),
+        *h4 = intToBinaryChar(INITIAL_HASH_VALUES[4]), *h5 = intToBinaryChar(INITIAL_HASH_VALUES[5]),
+        *h6 = intToBinaryChar(INITIAL_HASH_VALUES[6]), *h7 = intToBinaryChar(INITIAL_HASH_VALUES[7]);
     for(int i = 0; i < messageBlockLength / CHUNK_SIZE; i ++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             messageSchedule[j] = messageBlock[(i * CHUNK_SIZE) + j];
@@ -329,30 +314,18 @@ void fillMessageScheduleArray(const char messageBlock[], const int messageBlockL
 
         delete[] a; delete[] b; delete[] c; delete[] d; delete[] e; delete[] f; delete[] g; delete[] h;
     }
-    printHashVar(h0);
-    printHashVar(h1);
-    printHashVar(h2);
-    printHashVar(h3);
-    printHashVar(h4);
-    printHashVar(h5);
-    printHashVar(h6);
-    printHashVar(h7);
-    std::cout << std::endl;
+
+    char *hash = new char[65];
+    hashVarsToChar(hash, new char*[] {h0, h1, h2, h3, h4, h5, h6, h7});
+    hash[64] = '\0';
 
     delete[] h0; delete[] h1; delete h2; delete[] h3; delete[] h4; delete[] h5; delete[] h6; delete[] h7;
-}
-
-void printSHA(const char text[]) {
-    int messageBlockLength;
-    char *messageBlock = new char[MAX_MESSAGE_LENGTH];
-
-    fillMessageBlock(text, messageBlock, messageBlockLength);
-    char messageSchedule[MESSAGE_SCHEDULE_ARRAY_SIZE];
-
-    fillMessageScheduleArray(messageBlock, messageBlockLength, messageSchedule);
     delete[] messageBlock;
+    return hash;
 }
 
 char *getSHA(const char text[]) {
-
+    char *result = new char[64];
+    result = fillMessageScheduleArray2(text);
+    return result;
 }

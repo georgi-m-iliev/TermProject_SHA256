@@ -2,9 +2,6 @@
 #include "SHA256.h"
 #include "ConsoleTools.h"
 #include "FileTools.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 
 const int TEXT_LENGTH = 2000;
 
@@ -16,7 +13,9 @@ void optionA() {
         std::cin.getline(text, TEXT_LENGTH);
         text[length-2] = '\0';
         std::cout << "Result: ";
-        printSHA(text);
+        char *result = getSHA(text);
+        std::cout << result << '\n';
+        delete[] result;
         std::cout << "\n";
         if(std::cin.eof()) {
             break;
@@ -28,23 +27,25 @@ void optionA() {
 void optionB() {
     char text[TEXT_LENGTH], temp[TEXT_LENGTH];
     while(true) {
-        std::cout << "Enter absolute file path to open file or 0 to exit.\n";
+        std::cout << "Enter the absolute path of the file or type 0 and press ENTER to exit.\n";
         std::cin.getline(temp, TEXT_LENGTH);
         if(temp[0] == '0') {
             break;
         }
         int status = readFileToCharArr(temp, text);
         if(status == 0) {
+            char *result = getSHA(text);
             std::cout << "\nResult: ";
-            printSHA(text);
-            std::cout << "Would you like to save this hash to file? If yes, then enter path. If no then enter 0.\n\n";
+            std::cout << result << '\n';
+            std::cout << "\nWould you like to save this hash to file?\nIf yes, then enter absolute path. If no, then type 0 and press ENTER to exit.\n\n";
             std::cin.getline(temp, TEXT_LENGTH);
             if(temp[0] != '0') {
-                status = writeHashToFile(temp, text);
+                status = writeToFile(temp, result);
                 if(status == 0) {
                     std::cout << "File has been written successfully!\n\n";
                 }
             }
+            delete[] result;
         }
         if(status == -1) {
             std::cout << "Error, file cannot be opened, try again!\n\n";
@@ -59,6 +60,7 @@ void optionC() {
     char text[TEXT_LENGTH], path[TEXT_LENGTH];
     std::cin >> std::ws;
     while(true) {
+        std::cout << "Enter the absolute path of the file or type 0 and press ENTER to exit.\n";
         std::cin.getline(path, TEXT_LENGTH);
         if(path[0] == '0') {
             break;
@@ -74,8 +76,7 @@ void optionC() {
 }
 
 void defaultOption() {
-
-    while(true);
+    std::cin.get();
 }
 
 int main() {

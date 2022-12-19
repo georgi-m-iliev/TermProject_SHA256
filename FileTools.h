@@ -17,7 +17,7 @@ int readFileToCharArr(const char absPath[], char text[]) {
     return 0;
 }
 
-int writeHashToFile(const char absPath[], const char text[]) {
+int writeToFile(const char absPath[], const char text[]) {
     std::ofstream outputFile (absPath);
     if (outputFile.is_open()) {
         for(int i = 0; text[i] != '\0'; i++) {

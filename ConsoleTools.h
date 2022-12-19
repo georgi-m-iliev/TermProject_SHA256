@@ -69,7 +69,7 @@ void printOptionA() {
 
     std::cout << "You have chosen: hashing from console input.\n\n";
     std::cout << "Instructions:\n\nEnter the text you want to hash on a single line and press ENTER.\n"
-                 "When you are done press CTRL+Z and then ENTER to return to the main menu.\n\n";
+                 "To return to the main menu press CTRL+Z and then press ENTER \n\n";
     printedLines += 6;
     //printBlankLines(height, printedLines, 0);
 }
@@ -82,9 +82,9 @@ void printOptionB() {
     printHeader(width, printedLines);
 
     std::cout << "You have chosen: hashing from file input.\n\n";
-    std::cout << "Instructions:\n\nEnter the absolute path of the file you want to be hashed and press ENTER.\n"
-                 "Afterwards you can choose to save the generated hash by providing new path for new file.\n"
-                 "When the process is complete everything will start all over again. To exit enter 0 and press Enter.\n\n";
+    std::cout << "Instructions:\n\nEnter the absolute path of the file you want to hash and press ENTER.\n"
+                 "Afterwards you can choose to save the generated hash by providing absolute path for the new file.\n"
+                 "When the process is complete everything will start all over again. To exit type 0 and press Enter.\n\n";
     printedLines += 8;
     //printBlankLines(height, printedLines, 0);
 }
@@ -97,8 +97,8 @@ void printOptionC() {
     printHeader(width, printedLines);
 
     std::cout << "You have chosen: print hash from file.\n\n";
-    std::cout << "Instructions:\n\nEnter the absolute path of the file you want to be read ENTER.\n"
-                 "When the process is complete everything will start all over again. To exit enter 0 and press Enter.\n\n";
+    std::cout << "Instructions:\n\nEnter the absolute path of the file you want to read then press ENTER.\n"
+                 "When the process is complete everything will start all over again. To exit type 0 and press Enter.\n\n";
     printedLines += 7;
     //printBlankLines(height, printedLines, 0);
 }
@@ -109,7 +109,11 @@ void printDefaultOption() {
     getConsoleBoundaries(width, height);
 
     printHeader(width, printedLines);
-    std::cout << "\n\nError. Unknown input";
-    //TODO: Error
-    //printBlankLines(height, printedLines, 0);
+    for(int i = 0; i < (height - printedLines) / 2; i++) {
+        std::cout << "\n";
+        printedLines++;
+    }
+    std::cout << "Error. Unknown input! Press enter to go back.\n";
+
+    printBlankLines(height, printedLines, 0);
 }
