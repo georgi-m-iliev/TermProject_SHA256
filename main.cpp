@@ -28,6 +28,7 @@ void optionB() {
     char text[TEXT_LENGTH], temp[TEXT_LENGTH];
     while(true) {
         std::cout << "Enter the absolute path of the file or type 0 and press ENTER to exit.\n";
+        std::cin >> std::ws;
         std::cin.getline(temp, TEXT_LENGTH);
         if(temp[0] == '0') {
             break;
@@ -53,14 +54,15 @@ void optionB() {
         if(status != 0 && status != -1) {
             std::cout << "Unknown error :(\n\n";
         }
+        std::cout << "\n";
     }
 }
 
 void optionC() {
     char text[TEXT_LENGTH], path[TEXT_LENGTH];
-    std::cin >> std::ws;
     while(true) {
         std::cout << "Enter the absolute path of the file or type 0 and press ENTER to exit.\n";
+        std::cin >> std::ws;
         std::cin.getline(path, TEXT_LENGTH);
         if(path[0] == '0') {
             break;
@@ -72,20 +74,22 @@ void optionC() {
         else {
             std::cout << "Error, try again!\n\n";
         }
+        std::cout << "\n";
     }
 }
 
 void defaultOption() {
+    std::cin.sync();
     std::cin.get();
 }
 
 int main() {
-    int choice = -1;
-    while(choice != 0) {
+    char choice[TEXT_LENGTH];
+    while(choice[0] != '0') {
         clearConsole();
         printInitialScreen();
-        std::cin >> choice;
-        switch(choice) {
+        std::cin.getline(choice, TEXT_LENGTH);
+        switch(choice[0] - '0') {
             case 0: printExitMessage(); break;
             case 1:
                 printOptionA();

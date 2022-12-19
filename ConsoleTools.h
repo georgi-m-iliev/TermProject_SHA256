@@ -1,6 +1,11 @@
 #include <iostream>
 #include "ConsoleAPIs.h"
 
+const int LOGO_WIDTH_CHARS = 43;
+const int OPTIONS_WIDTH_CHARS = 29;
+const int INSTRUCTIONS_WIDTH_CHARS = 42;
+const int ERROR_WIDTH_CHARS = 45;
+
 void printBlankLines(const int height, int &printedLines, const int delta) {
     for(int i = 0; i < height - printedLines - 1 - delta; i++) {
         std::cout << "\n";
@@ -13,12 +18,12 @@ void printLogo(const int width, int &printedLines) {
     logoParts[0] = new char[] {R"(   _____ __  _____        ___   ___________)"};
     logoParts[1] = new char[] {R"(  / ___// / / /   |      |__ \ / ____/ ___/)"};
     logoParts[2] = new char[] {R"(  \__ \/ /_/ / /| |________/ //___ \/ __ \)"};
-    logoParts[3] = new char[] {R"( ___/ / __  / ___ /_____/ __/____/ / /_/ /)"};
-    logoParts[4] = new char[] {R"(/____/_/ /_/_/  |_|    /____/_____/\____/)"};
+    logoParts[3] = new char[] {R"( ___/ / __  / ___ /_____/ __/____/ / /_/ /  by Georgi Iliev)"};
+    logoParts[4] = new char[] {R"(/____/_/ /_/_/  |_|    /____/_____/\____/     8MI0600255)"};
 
     for(int i = 0; i < 5; i++) {
         // logo is 43 chars wide
-        for(int j = 0; j < (width - 43) / 2; j++) {
+        for(int j = 0; j < (width - LOGO_WIDTH_CHARS) / 2; j++) {
             std::cout << " ";
         }
         std::cout << logoParts[i] << "\n";
@@ -29,31 +34,40 @@ void printLogo(const int width, int &printedLines) {
 
 void printHeader(const int width, int &printedLines) {
     printLogo(width, printedLines);
-    std::cout << "\n\n"; printedLines += 2;
+    std::cout << "\n\n\n\n"; printedLines += 4;
 }
 
-void printOptions(int &printedLines) {
+void printInstructions(const int width, int &printedLines) {
+    for(int i = 0; i < (width - INSTRUCTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
+    std::cout << "Select from options [0-3] and press ENTER.\n";
+    printedLines++;
+}
+
+void printOptions(const int width, int &printedLines) {
+    for(int i = 0; i < (width - OPTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
     std::cout << "1. Hash from console" << std::endl;
+    for(int i = 0; i < (width - OPTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
     std::cout << "2. Hash from file" << std::endl;
+    for(int i = 0; i < (width - OPTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
     std::cout << "3. Print hash from file" << std::endl;
+    for(int i = 0; i < (width - OPTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
     std::cout << "0. Exit from this application" << std::endl;
     printedLines += 4;
 }
 
-void printExitMessage() {
-    clearConsole();
-    std::cout << "Have a nice day!" << std::endl;
-}
-
-
 void printInitialScreen() {
-    clearConsole();
     int width=0, height=0, printedLines = 0;
     getConsoleBoundaries(width, height);
+    clearConsole();
 
     printHeader(width, printedLines);
 
-    printOptions(printedLines);
+    printInstructions(width, printedLines);
+    for(int i = 0; i < (height - printedLines) / 2; i++) {
+        std::cout << '\n';
+        printedLines++;
+    }
+    printOptions(width, printedLines);
     std::cout << "\n\n"; printedLines += 2;
 
     printBlankLines(height, printedLines, 0);
@@ -61,9 +75,9 @@ void printInitialScreen() {
 }
 
 void printOptionA() {
-    clearConsole();
     int width=0, height=0, printedLines = 0;
     getConsoleBoundaries(width, height);
+    clearConsole();
 
     printHeader(width, printedLines);
 
@@ -75,9 +89,9 @@ void printOptionA() {
 }
 
 void printOptionB() {
-    clearConsole();
     int width=0, height=0, printedLines = 0;
     getConsoleBoundaries(width, height);
+    clearConsole();
 
     printHeader(width, printedLines);
 
@@ -90,9 +104,9 @@ void printOptionB() {
 }
 
 void printOptionC() {
-    clearConsole();
     int width=0, height=0, printedLines = 0;
     getConsoleBoundaries(width, height);
+    clearConsole();
 
     printHeader(width, printedLines);
 
@@ -104,16 +118,24 @@ void printOptionC() {
 }
 
 void printDefaultOption() {
-    clearConsole();
     int width=0, height=0, printedLines = 0;
     getConsoleBoundaries(width, height);
+    clearConsole();
 
     printHeader(width, printedLines);
     for(int i = 0; i < (height - printedLines) / 2; i++) {
         std::cout << "\n";
         printedLines++;
     }
+
+    for(int i = 0; i < (width - ERROR_WIDTH_CHARS) / 2; i++) std::cout << " ";
     std::cout << "Error. Unknown input! Press enter to go back.\n";
+    printedLines++;
 
     printBlankLines(height, printedLines, 0);
+}
+
+void printExitMessage() {
+    clearConsole();
+    std::cout << "Have a nice day!" << std::endl;
 }
