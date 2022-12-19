@@ -1,6 +1,10 @@
 #include <iostream>
-#include "ConsoleTools.h"
 #include "SHA256.h"
+#include "ConsoleTools.h"
+#include "FileTools.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
 const int TEXT_LENGTH = 2000;
 
@@ -22,12 +26,51 @@ void optionA() {
 }
 
 void optionB() {
-    while(true);
+    char text[TEXT_LENGTH], temp[TEXT_LENGTH];
+    while(true) {
+        std::cout << "Enter absolute file path to open file or 0 to exit.\n";
+        std::cin.getline(temp, TEXT_LENGTH);
+        if(temp[0] == '0') {
+            break;
+        }
+        int status = readFileToCharArr(temp, text);
+        if(status == 0) {
+            std::cout << "\nResult: ";
+            printSHA(text);
+            std::cout << "Would you like to save this hash to file? If yes, then enter path. If no then enter 0.\n\n";
+            std::cin.getline(temp, TEXT_LENGTH);
+            if(temp[0] != '0') {
+                status = writeHashToFile(temp, text);
+                if(status == 0) {
+                    std::cout << "File has been written successfully!\n\n";
+                }
+            }
+        }
+        if(status == -1) {
+            std::cout << "Error, file cannot be opened, try again!\n\n";
+        }
+        if(status != 0 && status != -1) {
+            std::cout << "Unknown error :(\n\n";
+        }
+    }
 }
 
 void optionC() {
-
-    while(true);
+    char text[TEXT_LENGTH], path[TEXT_LENGTH];
+    std::cin >> std::ws;
+    while(true) {
+        std::cin.getline(path, TEXT_LENGTH);
+        if(path[0] == '0') {
+            break;
+        }
+        int status = readFileToCharArr(path, text);
+        if(status == 0) {
+            std::cout << text << "\n\n";
+        }
+        else {
+            std::cout << "Error, try again!\n\n";
+        }
+    }
 }
 
 void defaultOption() {
@@ -50,6 +93,7 @@ int main() {
             case 2:
                 printOptionB();
                 optionB();
+
             break;
             case 3:
                 printOptionC();

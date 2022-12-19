@@ -27,8 +27,8 @@ int pow2(int a) {
     return result;
 }
 
-char* addArr(const char arr1[], const char arr2[]) {
-    char* newBits = new char[MSA_WORD_SIZE], leftover = '0';
+char *addArr(const char arr1[], const char arr2[]) {
+    char *newBits = new char[MSA_WORD_SIZE], leftover = '0';
     for(int i = MSA_WORD_SIZE - 1; i >= 0; i--) {
         if(arr1[i] == '1') {
             if(arr2[i] == '1') {
@@ -80,24 +80,24 @@ char* addArr(const char arr1[], const char arr2[]) {
     return newBits;
 }
 
-char* andArr(const char arr1[], const char arr2[]) {
-    char* newBits = new char[MSA_WORD_SIZE];
+char *andArr(const char arr1[], const char arr2[]) {
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0; i < MSA_WORD_SIZE; i++) {
         newBits[i] = arr1[i] == '1' && arr2[i] == '1' ? '1' : '0';
     }
     return newBits;
 }
 
-char* notArr(const char arr[]) {
-    char* newBits = new char[MSA_WORD_SIZE];
+char *notArr(const char arr[]) {
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0; i < MSA_WORD_SIZE; i++) {
         newBits[i] = arr[i] == '0' ? '1' : '0';
     }
     return newBits;
 }
 
-char* xorArr(const char arr1[], const char arr2[]) {
-    char* newBits = new char[MSA_WORD_SIZE];
+char *xorArr(const char arr1[], const char arr2[]) {
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0; i < MSA_WORD_SIZE; i++) {
         if(arr1[i] == '0') {
             if(arr2[i] == '0') {
@@ -119,8 +119,8 @@ char* xorArr(const char arr1[], const char arr2[]) {
     return newBits;
 }
 
-char* rightShift(const char bits[], const int start, const int times) {
-    char* newBits = new char[MSA_WORD_SIZE];
+char *rightShift(const char bits[], const int start, const int times) {
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0; i < times; i++) {
         newBits[i] = '0';
     }
@@ -130,8 +130,8 @@ char* rightShift(const char bits[], const int start, const int times) {
     return newBits;
 }
 
-char* rightRotate(const char bits[], const int start, const int times) {
-    char* newBits = new char[MSA_WORD_SIZE];
+char *rightRotate(const char bits[], const int start, const int times) {
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0, end = start + MSA_WORD_SIZE; i < times; i++) {
         newBits[i] = bits[end - times + i];
     }
@@ -180,7 +180,7 @@ void printHashVar(const char arr[]) {
 }
 
 char *intToBinaryChar(unsigned int value) {
-    char* newBits = new char[MSA_WORD_SIZE];
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = MSA_WORD_SIZE - 1; i >= 0; i--) {
         newBits[i] = (char)((value % 2) + '0');
         value /= 2;
@@ -189,7 +189,7 @@ char *intToBinaryChar(unsigned int value) {
 }
 
 char *extractWord(const char messageSchedule[], int ind) {
-    char* newBits = new char[MSA_WORD_SIZE];
+    char *newBits = new char[MSA_WORD_SIZE];
     for(int i = 0; i < MSA_WORD_SIZE; i++) {
         newBits[i] = messageSchedule[(ind * MSA_WORD_SIZE) + i];
     }
@@ -197,7 +197,7 @@ char *extractWord(const char messageSchedule[], int ind) {
 }
 
 char *copyCharArr(const char arr1[], int length) {
-    char* newBits = new char[length];
+    char *newBits = new char[length];
     for(int i = 0; i < length; i++) {
         newBits[i] = arr1[i];
     }
@@ -344,11 +344,15 @@ void fillMessageScheduleArray(const char messageBlock[], const int messageBlockL
 
 void printSHA(const char text[]) {
     int messageBlockLength;
-    char* messageBlock = new char[MAX_MESSAGE_LENGTH];
+    char *messageBlock = new char[MAX_MESSAGE_LENGTH];
 
     fillMessageBlock(text, messageBlock, messageBlockLength);
     char messageSchedule[MESSAGE_SCHEDULE_ARRAY_SIZE];
 
     fillMessageScheduleArray(messageBlock, messageBlockLength, messageSchedule);
     delete[] messageBlock;
+}
+
+char *getSHA(const char text[]) {
+
 }
