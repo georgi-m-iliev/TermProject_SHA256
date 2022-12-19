@@ -1,11 +1,17 @@
+/*
+ * This header file provides almost everything regarding drawing the desired text to the console.
+*/
+
 #include <iostream>
 #include "ConsoleAPIs.h"
 
+// Constants about centering text, should be changed if length of the text changes
 const int LOGO_WIDTH_CHARS = 43;
 const int OPTIONS_WIDTH_CHARS = 29;
 const int INSTRUCTIONS_WIDTH_CHARS = 42;
 const int ERROR_WIDTH_CHARS = 45;
 
+// Function for printing blank lines to get the cursor down to the bottom of the console
 void printBlankLines(const int height, int &printedLines, const int delta) {
     for(int i = 0; i < height - printedLines - 1 - delta; i++) {
         std::cout << "\n";
@@ -22,7 +28,7 @@ void printLogo(const int width, int &printedLines) {
     logoParts[4] = new char[] {R"(/____/_/ /_/_/  |_|    /____/_____/\____/     8MI0600255)"};
 
     for(int i = 0; i < 5; i++) {
-        // logo is 43 chars wide
+        // Logo is centered
         for(int j = 0; j < (width - LOGO_WIDTH_CHARS) / 2; j++) {
             std::cout << " ";
         }

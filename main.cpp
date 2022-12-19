@@ -3,8 +3,10 @@
 #include "ConsoleTools.h"
 #include "FileTools.h"
 
+// Constraint for string of char array
 const int TEXT_LENGTH = 2000;
 
+// Function implementing hashing by input from console
 void optionA() {
     int length = 0;
     char *text = new char[TEXT_LENGTH];
@@ -24,6 +26,7 @@ void optionA() {
     delete[] text;
 }
 
+// Function implementing hashing by input from file
 void optionB() {
     char text[TEXT_LENGTH], temp[TEXT_LENGTH];
     while(true) {
@@ -58,6 +61,7 @@ void optionB() {
     }
 }
 
+//Function implementing reading from file
 void optionC() {
     char text[TEXT_LENGTH], path[TEXT_LENGTH];
     while(true) {
@@ -78,6 +82,8 @@ void optionC() {
     }
 }
 
+
+//Function for default behaviour, when chosen option does not exist
 void defaultOption() {
     std::cin.sync();
     std::cin.get();

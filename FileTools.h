@@ -1,14 +1,23 @@
+/*
+ * This header file provides functions for reading and writing files.
+*/
+
 #include <iostream>
 #include <fstream>
 
+// The function needs absolute path to access the file and an array of chars for string
 int readFileToCharArr(const char absPath[], char text[]) {
     int ind = 0;
     std::ifstream inputFile (absPath);
     if (inputFile.is_open()) {
         while (!inputFile.eof()) {
+            // Because we are hashing the contents by characters and not by binary representation,
+            // we need every symbol on one line, hence getline() is not appropriate
             inputFile.get(text[ind++]);
         }
+        // Must not forget the termination character
         text[ind-1] = '\0';
+        // Closing the stream is very important too
         inputFile.close();
     }
     else {
@@ -17,6 +26,7 @@ int readFileToCharArr(const char absPath[], char text[]) {
     return 0;
 }
 
+// The function writes the character string, containing the hash, to the file
 int writeToFile(const char absPath[], const char text[]) {
     std::ofstream outputFile (absPath);
     if (outputFile.is_open()) {

@@ -1,3 +1,7 @@
+/*
+ * This header file provides functions for controlling the console.
+*/
+
 #if defined(_WIN32)
 
 #include <Windows.h>
