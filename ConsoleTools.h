@@ -57,6 +57,7 @@ void printInitialScreen() {
     std::cout << "\n\n"; printedLines += 2;
 
     printBlankLines(height, printedLines, 0);
+    std::cin.clear();
 }
 
 void printOptionA() {
@@ -66,21 +67,48 @@ void printOptionA() {
 
     printHeader(width, printedLines);
 
-    std::cout << "You have chosen: hashing from console input.";
-    std::cout << "\n\n"; printedLines += 2;
-    std::cout << "Instructions: Enter the text you want to hash. When you are ready press ENTER to go to the next line and press CTRL + Z and ENTER again to finish entering text.\n\n";
-
-//    printBlankLines(height, printedLines, 0);
+    std::cout << "You have chosen: hashing from console input.\n\n";
+    std::cout << "Instructions:\nEnter the text you want to hash on a single line and press ENTER.\n"
+                 "When you are done press CTRL+Z and then ENTER to return to the main menu.\n\n";
+    printedLines += 6;
+    //printBlankLines(height, printedLines, 0);
 }
 
 void printOptionB() {
+    clearConsole();
+    int width=0, height=0, printedLines = 0;
+    getConsoleBoundaries(width, height);
 
+    printHeader(width, printedLines);
+
+    std::cout << "You have chosen: hashing from file input.\n\n";
+    std::cout << "Instructions:\nEnter the text you want to hash on a single line and press ENTER.\n"
+                 "When you are done press CTRL+Z and then ENTER to return to the main menu.\n\n";
+    printedLines += 6;
+    //printBlankLines(height, printedLines, 0);
 }
 
 void printOptionC() {
+    clearConsole();
+    int width=0, height=0, printedLines = 0;
+    getConsoleBoundaries(width, height);
 
+    printHeader(width, printedLines);
+
+    std::cout << "You have chosen: print hash from file.\n\n";
+    std::cout << "Instructions:\nEnter the text you want to hash on a single line and press ENTER.\n"
+                 "When you are done press CTRL+Z and then ENTER to return to the main menu.\n\n";
+    printedLines += 6;
+    //printBlankLines(height, printedLines, 0);
 }
 
 void printDefaultOption() {
+    clearConsole();
+    int width=0, height=0, printedLines = 0;
+    getConsoleBoundaries(width, height);
 
+    printHeader(width, printedLines);
+    std::cout << "\n\nError. Unknown input";
+    //TODO: Error
+    //printBlankLines(height, printedLines, 0);
 }

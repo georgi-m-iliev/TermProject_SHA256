@@ -13,7 +13,7 @@ void optionA() {
         text[length-2] = '\0';
         std::cout << "Result: ";
         printSHA(text);
-        std::cout << "\n\n";
+        std::cout << "\n";
         if(std::cin.eof()) {
             break;
         }
@@ -22,18 +22,17 @@ void optionA() {
 }
 
 void optionB() {
-
-    std::cout << "Option B";
+    while(true);
 }
 
 void optionC() {
 
-    std::cout << "Option c";
+    while(true);
 }
 
 void defaultOption() {
 
-    std::cout << "Option D";
+    while(true);
 }
 
 int main() {
