@@ -8,7 +8,7 @@
 // Constants about centering text, should be changed if length of the text changes
 const int LOGO_WIDTH_CHARS = 43;
 const int OPTIONS_WIDTH_CHARS = 29;
-const int INSTRUCTIONS_WIDTH_CHARS = 42;
+const int INSTRUCTIONS_WIDTH_CHARS[2] = {42, 63};
 const int ERROR_WIDTH_CHARS = 45;
 
 // Function for printing blank lines to get the cursor down to the bottom of the console
@@ -44,9 +44,11 @@ void printHeader(const int width, int &printedLines) {
 }
 
 void printInstructions(const int width, int &printedLines) {
-    for(int i = 0; i < (width - INSTRUCTIONS_WIDTH_CHARS) / 2; i++) std::cout << " ";
+    for(int i = 0; i < (width - INSTRUCTIONS_WIDTH_CHARS[0]) / 2; i++) std::cout << " ";
     std::cout << "Select from options [0-3] and press ENTER.\n";
-    printedLines++;
+    for(int i = 0; i < (width - INSTRUCTIONS_WIDTH_CHARS[1]) / 2; i++) std::cout << " ";
+    std::cout << "NB: Characters other than ASCII are not supported in any way!!!\n";
+    printedLines += 2;
 }
 
 void printOptions(const int width, int &printedLines) {
