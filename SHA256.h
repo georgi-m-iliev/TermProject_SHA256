@@ -28,7 +28,7 @@ int pow2(int a) {
 }
 
 // Function adding two arrays of length MSA_WORD_BITS and returning pointer to the result
-char *addArr(const char arr1[], const char arr2[]) {
+char *addArr(const char arr1[], const char arr2[], int deleteFlag) {
     char *newBits = new char[MSA_WORD_BITS], leftover = '0';
     for(int i = MSA_WORD_BITS - 1; i >= 0; i--) {
         if(arr1[i] == '1') {
@@ -77,16 +77,46 @@ char *addArr(const char arr1[], const char arr2[]) {
         }
     }
 
+    switch(deleteFlag) {
+        case 1:
+            delete[] arr1;
+            break;
+        case 2:
+            delete[] arr2;
+            break;
+        case 3:
+            delete[] arr1;
+            delete[] arr2;
+            break;
+        default:
+            break;
+    }
 
     return newBits;
 }
 
 // Function returning bitwise and of two arrays with length MSA_WORD_BITS
-char *andArr(const char arr1[], const char arr2[]) {
+char *andArr(const char arr1[], const char arr2[], int deleteFlag) {
     char *newBits = new char[MSA_WORD_BITS];
     for(int i = 0; i < MSA_WORD_BITS; i++) {
         newBits[i] = arr1[i] == '1' && arr2[i] == '1' ? '1' : '0';
     }
+
+    switch(deleteFlag) {
+        case 1:
+            delete[] arr1;
+            break;
+        case 2:
+            delete[] arr2;
+            break;
+        case 3:
+            delete[] arr1;
+            delete[] arr2;
+            break;
+        default:
+            break;
+    }
+
     return newBits;
 }
 
@@ -100,7 +130,7 @@ char *notArr(const char arr[]) {
 }
 
 // Function returning bitwise exclusive or of an array with length MSA_WORD_BITS
-char *xorArr(const char arr1[], const char arr2[]) {
+char *xorArr(const char arr1[], const char arr2[], int deleteFlag) {
     char *newBits = new char[MSA_WORD_BITS];
     for(int i = 0; i < MSA_WORD_BITS; i++) {
         if(arr1[i] == '0') {
@@ -120,6 +150,22 @@ char *xorArr(const char arr1[], const char arr2[]) {
             }
         }
     }
+
+    switch(deleteFlag) {
+        case 1:
+            delete[] arr1;
+            break;
+        case 2:
+            delete[] arr2;
+            break;
+        case 3:
+            delete[] arr1;
+            delete[] arr2;
+            break;
+        default:
+            break;
+    }
+
     return newBits;
 }
 
@@ -219,7 +265,7 @@ void fillMessageBlock(const char text[], char messageBlock[], int &length) {
 }
 
 // Function converting the hash variables, containing the result, to char array string
-void hashVarsToChar(char hash[], char **h) {
+void hashVarsToChar(char hash[], char *h[8]) {
     for(int i = 0, ind = 0; i < MSA_WORD_BITS / 4; i++) {
         for(int j = 0; j < MSA_WORD_BITS; j += 4) {
             int number = ((h[i][j] - '0') * pow2(3)) + ((h[i][j + 1] - '0') * pow2(2)) + ((h[i][j + 2] - '0') * pow2(1)) + (h[i][j + 3] - '0');
@@ -231,8 +277,6 @@ void hashVarsToChar(char hash[], char **h) {
             }
         }
     }
-
-    delete[] h;
 }
 
 // Function implementing the second part of the SHA-256 algorithm
@@ -258,17 +302,21 @@ char *fillMessageScheduleArray2(const char text[]) {
             char *sigma0 = xorArr(
                     xorArr(
                             rightRotate(messageSchedule, (j - 15) * MSA_WORD_BITS, 7),
-                            rightRotate(messageSchedule, (j - 15) * MSA_WORD_BITS, 18)
+                            rightRotate(messageSchedule, (j - 15) * MSA_WORD_BITS, 18),
+                            3
                     ),
-                    rightShift(messageSchedule, (j - 15) * MSA_WORD_BITS, 3)
+                    rightShift(messageSchedule, (j - 15) * MSA_WORD_BITS, 3),
+                    3
             );
 
             char *sigma1 = xorArr(
                     xorArr(
                             rightRotate(messageSchedule, (j - 2) * MSA_WORD_BITS, 17),
-                            rightRotate(messageSchedule, (j - 2) * MSA_WORD_BITS, 19)
+                            rightRotate(messageSchedule, (j - 2) * MSA_WORD_BITS, 19),
+                            3
                     ),
-                    rightShift(messageSchedule, (j - 2) * MSA_WORD_BITS, 10)
+                    rightShift(messageSchedule, (j - 2) * MSA_WORD_BITS, 10),
+                    3
             );
 
             char *wA = new char[MSA_WORD_BITS];
@@ -278,63 +326,102 @@ char *fillMessageScheduleArray2(const char text[]) {
                 wB[k] = messageSchedule[((j - 7) * MSA_WORD_BITS) + k];
             }
 
-            char *result = addArr(addArr(addArr(wA, sigma0), wB), sigma1);
+            char *result = addArr(addArr(addArr(wA, sigma0, 0), wB, 1), sigma1, 1);
 
             for(int k = 0; k < MSA_WORD_BITS; k++) {
                 messageSchedule[(j * MSA_WORD_BITS) + k] = result[k];
             }
 
-            delete[] sigma0; delete[] sigma1; delete[] wA; delete[] wB; delete[] result;
+            delete[] sigma0;
+            delete[] sigma1;
+            delete[] wA;
+            delete[] wB;
+            delete[] result;
         }
         char *a = copyCharArr(h0, MSA_WORD_BITS), *b = copyCharArr(h1, MSA_WORD_BITS),
                 *c = copyCharArr(h2, MSA_WORD_BITS), *d = copyCharArr(h3, MSA_WORD_BITS),
                 *e = copyCharArr(h4, MSA_WORD_BITS), *f = copyCharArr(h5, MSA_WORD_BITS),
                 *g = copyCharArr(h6, MSA_WORD_BITS), *h = copyCharArr(h7, MSA_WORD_BITS);
         for(int q = 0; q < MESSAGE_SCHEDULE_ARRAY_BITS / MSA_WORD_BITS; q++) {
-            char *sum0 = xorArr(xorArr(rightRotate(a, 0, 2), rightRotate(a, 0, 13)), rightRotate(a, 0, 22));
-            char *sum1 = xorArr(xorArr(rightRotate(e, 0, 6), rightRotate(e, 0, 11)), rightRotate(e, 0, 25));
-            char *majority = xorArr(xorArr(andArr(a, b), andArr(a, c)), andArr(b, c));
-            char *choice = xorArr(andArr(e, f), andArr(notArr(e), g));
+            char *sum0 = xorArr(xorArr(rightRotate(a, 0, 2), rightRotate(a, 0, 13), 3), rightRotate(a, 0, 22), 3);
+            char *sum1 = xorArr(xorArr(rightRotate(e, 0, 6), rightRotate(e, 0, 11), 3), rightRotate(e, 0, 25), 3);
+            char *majority = xorArr(xorArr(andArr(a, b, 0), andArr(a, c, 0), 3), andArr(b, c, 0), 3);
+            char *choice = xorArr(andArr(e, f, 0), andArr(notArr(e), g, 0), 3);
             char *temp1 = addArr(
                     addArr(
                             addArr(
-                                    addArr(h, sum1),
-                                    choice),
-                            intToBinaryChar(ROUNDING_CONSTANTS[q])
+                                    addArr(h, sum1, 0),
+                                    choice,
+                                    1
+                                ),
+                            intToBinaryChar(ROUNDING_CONSTANTS[q]),
+                            3
                     ),
-                    extractWord(messageSchedule, q)
+                    extractWord(messageSchedule, q),
+                    3
             );
-            char *temp2 = addArr(sum0, majority);
+            char *temp2 = addArr(sum0, majority, 0);
 
             moveArr(h, g, MSA_WORD_BITS);
             moveArr(g, f, MSA_WORD_BITS);
             moveArr(f, e, MSA_WORD_BITS);
-            e = addArr(d, temp1);
+            delete[] e;
+            e = addArr(d, temp1, 0);
             moveArr(d, c, MSA_WORD_BITS);
             moveArr(c, b, MSA_WORD_BITS);
             moveArr(b, a, MSA_WORD_BITS);
-            a = addArr(temp1, temp2);
+            delete[] a;
+            a = addArr(temp1, temp2, 0);
 
-            delete[] sum0; delete[]sum1; delete[] majority; delete[] choice; delete[] temp1; delete[] temp2;
+            delete[] sum0;
+            delete[] sum1;
+            delete[] majority;
+            delete[] choice;
+            delete[] temp1;
+            delete[] temp2;
         }
-        h0 = addArr(h0, a);
-        h1 = addArr(h1, b);
-        h2 = addArr(h2, c);
-        h3 = addArr(h3, d);
-        h4 = addArr(h4, e);
-        h5 = addArr(h5, f);
-        h6 = addArr(h6, g);
-        h7 = addArr(h7, h);
+        delete[] h0;
+        h0 = addArr(h0, a, 0);
+        delete[] h1;
+        h1 = addArr(h1, b, 0);
+        delete[] h2;
+        h2 = addArr(h2, c, 0);
+        delete[] h3;
+        h3 = addArr(h3, d, 0);
+        delete[] h4;
+        h4 = addArr(h4, e, 0);
+        delete[] h5;
+        h5 = addArr(h5, f, 0);
+        delete[] h6;
+        h6 = addArr(h6, g, 0);
+        delete[] h7;
+        h7 = addArr(h7, h, 0);
 
-        delete[] a; delete[] b; delete[] c; delete[] d; delete[] e; delete[] f; delete[] g; delete[] h;
+        delete[] a;
+        delete[] b;
+        delete[] c;
+        delete[] d;
+        delete[] e;
+        delete[] f;
+        delete[] g;
+        delete[] h;
     }
 
     char *hash = new char[65];
-    hashVarsToChar(hash, new char*[] {h0, h1, h2, h3, h4, h5, h6, h7});
+    char* hashVarPointers[8] = {h0, h1, h2, h3, h4, h5, h6, h7};
+    hashVarsToChar(hash, hashVarPointers);
     hash[64] = '\0';
 
-    delete[] h0; delete[] h1; delete h2; delete[] h3; delete[] h4; delete[] h5; delete[] h6; delete[] h7;
+    delete[] h0;
+    delete[] h1;
+    delete[] h2;
+    delete[] h3;
+    delete[] h4;
+    delete[] h5;
+    delete[] h6;
+    delete[] h7;
     delete[] messageBlock;
+
     return hash;
 }
 

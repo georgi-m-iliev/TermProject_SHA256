@@ -8,20 +8,18 @@ const int TEXT_LENGTH = 2000;
 
 // Function implementing hashing by input from console
 void optionA() {
-    int length = 0;
     char *text = new char[TEXT_LENGTH];
     std::cin >> std::ws;
     while(true) {
         std::cin.getline(text, TEXT_LENGTH);
-        text[length-2] = '\0';
-        std::cout << "Result: ";
-        char *result = getSHA(text);
-        std::cout << result << '\n';
-        delete[] result;
-        std::cout << "\n";
         if(std::cin.eof()) {
             break;
         }
+        std::cout << "Result: ";
+        char *result = getSHA(text);
+        std::cout << result << '\n';
+        std::cout << "\n";
+        delete[] result;
     }
     delete[] text;
 }
@@ -119,4 +117,3 @@ int main() {
 
     return 0;
 }
-
