@@ -19,13 +19,13 @@ void printBlankLines(const int height, int &printedLines, const int delta) {
 }
 
 void printLogo(const int width, int &printedLines) {
+    char logoPart1[] = R"(   _____ __  _____        ___   ___________)";
+    char logoPart2[] = R"(  / ___// / / /   |      |__ \ / ____/ ___/)";
+    char logoPart3[] = R"(  \__ \/ /_/ / /| |________/ //___ \/ __ \)";
+    char logoPart4[] = R"( ___/ / __  / ___ /_____/ __/____/ / /_/ /  by Georgi Iliev)";
+    char logoPart5[] = R"(/____/_/ /_/_/  |_|    /____/_____/\____/     8MI0600255)";
 
-    char **logoParts = new char*[5];
-    logoParts[0] = new char[] {R"(   _____ __  _____        ___   ___________)"};
-    logoParts[1] = new char[] {R"(  / ___// / / /   |      |__ \ / ____/ ___/)"};
-    logoParts[2] = new char[] {R"(  \__ \/ /_/ / /| |________/ //___ \/ __ \)"};
-    logoParts[3] = new char[] {R"( ___/ / __  / ___ /_____/ __/____/ / /_/ /  by Georgi Iliev)"};
-    logoParts[4] = new char[] {R"(/____/_/ /_/_/  |_|    /____/_____/\____/     8MI0600255)"};
+    char* logoParts[5] = {logoPart1, logoPart2, logoPart3, logoPart4, logoPart5};
 
     for(int i = 0; i < 5; i++) {
         // Logo is centered
@@ -35,7 +35,6 @@ void printLogo(const int width, int &printedLines) {
         std::cout << logoParts[i] << "\n";
         printedLines++;
     }
-
 }
 
 void printHeader(const int width, int &printedLines) {
