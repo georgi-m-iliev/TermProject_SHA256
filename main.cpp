@@ -76,7 +76,7 @@ void optionC() {
         }
         int status = readFileToCharArr(path, text);
         if(status == 0) {
-            std::cout << "\nOutput:\n" << text;
+            std::cout << "\nOutput:\n" << text << "\n";
         }
         else {
             std::cout << "Error, try again!\n\n";
@@ -103,7 +103,7 @@ int main() {
             break;
         };
         switch(choice[0] - '0') {
-            case 0: printExitMessage(); break;
+            case 0: printExitMessage(); return 0;
             case 1:
                 printOptionA();
                 optionA();
