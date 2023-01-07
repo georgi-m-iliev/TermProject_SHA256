@@ -90,7 +90,15 @@ void printOptionA() {
 
     std::cout << "You have chosen: hashing from console input.\n\n";
     std::cout << "Instructions:\n\nEnter the text you want to hash on a single line and press ENTER.\n"
-                 "To return to the main menu press CTRL+Z and then press ENTER \n\n";
+                 "To return to the main menu press ";
+    #if defined(_WIN32)
+        std::cout << "CTRL+Z";
+    #elif defined(__linux__)
+        std::cout << "CTRL+D";
+    #elif defined (__APPLE__)
+        std::cout << "CTRL+D";
+    #endif
+    std::cout << " and then press ENTER \n\n";
     printedLines += 6;
     //printBlankLines(height, printedLines, 0);
 }
