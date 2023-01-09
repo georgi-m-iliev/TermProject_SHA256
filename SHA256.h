@@ -326,17 +326,17 @@ char *fillMessageScheduleArray2(const char text[]) {
             char *majority = xorArr(xorArr(andArr(a, b, 0), andArr(a, c, 0)), andArr(b, c, 0));
             char *choice = xorArr(andArr(e, f, 0), andArr(notArr(e), g, 1));
             char *temp1 = addArr(
+                addArr(
                     addArr(
-                        addArr(
                         addArr(h, sum1, 0),
                         choice,
                         1
                     ),
                     intToBinaryChar(ROUNDING_CONSTANTS[q]),
                     3
-                    ),
-                    extractWord(messageSchedule, q),
-                    3
+                ),
+                extractWord(messageSchedule, q),
+                3
             );
             char *temp2 = addArr(sum0, majority, 0);
 
