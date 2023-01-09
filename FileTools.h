@@ -1,8 +1,17 @@
 /*
- * This header file provides functions for reading and writing files.
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Georgi Iliev
+* @idnumber 8MI0600255 
+* @compiler gcc
+*
+* <Header file providing functions for reading and writing files>
+*
 */
 
-#include <iostream>
 #include <fstream>
 
 // The function needs absolute path to access the file and an array of chars for string

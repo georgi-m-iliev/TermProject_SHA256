@@ -1,5 +1,15 @@
 /*
- * This header file provides almost everything regarding drawing the desired text to the console.
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Georgi Iliev
+* @idnumber 8MI0600255 
+* @compiler gcc
+*
+* <Header file providing almost everything regarding printing the desired text to the console>
+*
 */
 
 #include <iostream>

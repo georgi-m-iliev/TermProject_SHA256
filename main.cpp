@@ -1,3 +1,17 @@
+/*
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Georgi Iliev
+* @idnumber 8MI0600255 
+* @compiler gcc
+*
+* <Main entry file, containing core functions' implementations>
+*
+*/
+
 #include <iostream>
 #include "SHA256.h"
 #include "ConsoleTools.h"

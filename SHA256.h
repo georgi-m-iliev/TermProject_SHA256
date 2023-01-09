@@ -1,4 +1,16 @@
-#include <iostream>
+/*
+* Solution to course project # 6
+* Introduction to programming course
+* Faculty of Mathematics and Informatics of Sofia University
+* Winter semester 2022/2023
+*
+* @author Georgi Iliev
+* @idnumber 8MI0600255 
+* @compiler gcc
+*
+* <Header file providing hashing using the SHA-256 algorithm>
+*
+*/
 
 // Constants for setting the length of arrays representing bit sequences
 const int CHAR_BITS  = 8;
