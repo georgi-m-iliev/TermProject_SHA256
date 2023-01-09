@@ -262,17 +262,10 @@ void hashVarsToChar(char hash[], char *h[8]) {
 }
 
 // Function implementing the second part of the SHA-256 algorithm
-char *fillMessageScheduleArray2(const char text[]) {
-    int messageBlockLength;
-    char *messageBlock = new char[MAX_MESSAGE_LENGTH];
-
-    fillMessageBlock(text, messageBlock, messageBlockLength);
-    char messageSchedule[MESSAGE_SCHEDULE_ARRAY_BITS];
-
-    char *h0 = intToBinaryChar(INITIAL_HASH_VALUES[0]), *h1 = intToBinaryChar(INITIAL_HASH_VALUES[1]),
-        *h2 = intToBinaryChar(INITIAL_HASH_VALUES[2]), *h3 = intToBinaryChar(INITIAL_HASH_VALUES[3]),
-        *h4 = intToBinaryChar(INITIAL_HASH_VALUES[4]), *h5 = intToBinaryChar(INITIAL_HASH_VALUES[5]),
-        *h6 = intToBinaryChar(INITIAL_HASH_VALUES[6]), *h7 = intToBinaryChar(INITIAL_HASH_VALUES[7]);
+void fillMessageScheduleArray2(
+    const char text[], const char *messageBlock, int messageBlockLength, char messageSchedule[MESSAGE_SCHEDULE_ARRAY_BITS],
+    char* &h0, char* &h1, char* &h2, char* &h3, char* &h4, char* &h5, char* &h6, char* &h7
+) {
     for(int i = 0; i < messageBlockLength / CHUNK_SIZE; i ++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             messageSchedule[j] = messageBlock[(i * CHUNK_SIZE) + j];
@@ -376,6 +369,21 @@ char *fillMessageScheduleArray2(const char text[]) {
         delete[] g;
         delete[] h;
     }
+}
+
+// Function returning a ready hash in char array string
+char *getSHA(const char text[]) {
+    int messageBlockLength;
+    char *messageBlock = new char[MAX_MESSAGE_LENGTH];
+
+    fillMessageBlock(text, messageBlock, messageBlockLength);
+    char messageSchedule[MESSAGE_SCHEDULE_ARRAY_BITS];
+    char *h0 = intToBinaryChar(INITIAL_HASH_VALUES[0]), *h1 = intToBinaryChar(INITIAL_HASH_VALUES[1]),
+        *h2 = intToBinaryChar(INITIAL_HASH_VALUES[2]), *h3 = intToBinaryChar(INITIAL_HASH_VALUES[3]),
+        *h4 = intToBinaryChar(INITIAL_HASH_VALUES[4]), *h5 = intToBinaryChar(INITIAL_HASH_VALUES[5]),
+        *h6 = intToBinaryChar(INITIAL_HASH_VALUES[6]), *h7 = intToBinaryChar(INITIAL_HASH_VALUES[7]);
+
+    fillMessageScheduleArray2(text, messageBlock, messageBlockLength, messageSchedule, h0, h1, h2, h3, h4, h5, h6, h7);
 
     char *hash = new char[65];
     char* hashVarPointers[8] = {h0, h1, h2, h3, h4, h5, h6, h7};
@@ -393,9 +401,4 @@ char *fillMessageScheduleArray2(const char text[]) {
     delete[] messageBlock;
 
     return hash;
-}
-
-// Function returning a ready hash in char array string
-char *getSHA(const char text[]) {
-    return fillMessageScheduleArray2(text);
 }
