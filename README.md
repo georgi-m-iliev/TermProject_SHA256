@@ -9,6 +9,7 @@
 ### Compilation
 
 - Execute cmake --build *INPUT PATH* --target TermProject_SHA256 -j 6
+- Liunx alternative: cmake CMakeLists.txt && make
 
 ### Usage
 
