@@ -58,6 +58,7 @@ void optionB() {
             std::cout << "Output Path / exit: ";
             if(!std::cin.getline(temp, TEXT_LENGTH) || temp[0] == '0') {
                 clearerr(stdin);
+                delete[] result;
                 break;
             }
             if(temp[0] != '0') {
